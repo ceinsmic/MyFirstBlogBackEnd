@@ -3,6 +3,14 @@ namespace MyFirstBlog.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using MyFirstBlog.Dtos;
 using MyFirstBlog.Services;
+using System.ComponentModel.DataAnnotations;
+
+public class CreatePostRequest
+{
+    [Required]
+    public string Title { get; set; } = default!;
+    public string Description { get; set; } = default!;
+}
 
 [ApiController]
 [Route("posts")]
@@ -30,5 +38,26 @@ public class PostsController : ControllerBase {
         }
 
         return post;
+    }
+    [HttpPost]
+    public ActionResult CreatePost(CreatePostRequest enter)
+    {
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var newPost = new PostDto
+        {
+            Id = Guid.NewGuid(),
+            Title = enter.Title,
+            Body = enter.Description,
+            Slug = enter.Title.ToLower().Replace(" ", "-"),
+        };
+
+        _postService.createpost(newPost);
+
+        return Ok(enter);
+        
     }
 }

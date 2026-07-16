@@ -15,7 +15,7 @@ services.AddDbContext<DataContext>();
 services.AddCors(policyBuilder => {
     policyBuilder.AddPolicy( MyAllowLocalhostOrigins,
         policy => {
-            policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+            policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
         });
 });
 
@@ -39,6 +39,7 @@ if (env.IsDevelopment())
 
     app.UseCors(MyAllowLocalhostOrigins);
 }
+app.UseCors(MyAllowLocalhostOrigins);
 
 if (env.IsProduction())
 {
