@@ -44,6 +44,10 @@ public class PostsController : ControllerBase {
     {
         if(!ModelState.IsValid)
         {
+            if(enter.Title == null)
+            {
+                ModelState.AddModelError("Title", "Title cannot be blank");
+            }
             return BadRequest(ModelState);
         }
 
